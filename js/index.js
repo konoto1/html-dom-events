@@ -14,3 +14,6 @@ export function header() {
     }
     navDOM[0].innerHTML = HTML;
 }
+
+
+// document.body.insertAdjacentHTML('afterbegin', HTML); insertAdjacentHTML(a, b) - palieka sena turini, o kur istatyti naujai sugenertuota nurodome a - kintamajame, b - HTML kuri norime istatyti.
