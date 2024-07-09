@@ -9,37 +9,16 @@ const resultDOM = document.querySelector('.one > div');
 
 let total = 0;
 
-function minusOne() {
-    total--;
-    resultDOM.textContent = total;
-}
-function minusTwo() {
-    total -= 2;
-    resultDOM.textContent = total;
-}
-function minusThree() {
-    total -= 3;
+function update(coof = 0) {
+    total += coof;
     resultDOM.textContent = total;
 }
 
-function plusOne() {
-    total++;
-    resultDOM.textContent = total;
-}
-function plusTwo() {
-    total += 2;
-    resultDOM.textContent = total;
-}
-function plusThree() {
-    total += 3;
-    resultDOM.textContent = total;
-}
+minusDOM1.addEventListener('click', () => update(-1));
+minusDOM2.addEventListener('click', () => update(-2));
+minusDOM3.addEventListener('click', () => update(-3));
 
-minusDOM1.addEventListener('click', minusOne);
-minusDOM2.addEventListener('click', minusTwo);
-minusDOM3.addEventListener('click', minusThree);
-
-plusDOM1.addEventListener('click', plusOne);
-plusDOM2.addEventListener('click', plusTwo);
-plusDOM3.addEventListener('click', plusThree);
+plusDOM1.addEventListener('click', () => update(1));
+plusDOM2.addEventListener('click', () => update(2));
+plusDOM3.addEventListener('click', () => update(3));
 
