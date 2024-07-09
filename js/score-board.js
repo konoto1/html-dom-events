@@ -17,43 +17,43 @@ let scoreHome = 0;
 let scoreGuest = 0;
 
 
-function plusOneHome() {
-    scoreHome++;
+function plusHome(a = 0) {
+    scoreHome += a;
     scoreHomeDOM.textContent = scoreHome;
-    statsDOM.innerHTML = '<br><b>Home:</b> +1' + statsDOM.innerHTML;
+    statsDOM.insertAdjacentHTML('afterbegin', `<br><b>Home:</b> +${a}`);
 }
-function plusTwoHome() {
-    scoreHome += 2;
-    scoreHomeDOM.textContent = scoreHome;
-    statsDOM.innerHTML = '<br><b>Home:</b> +2' + statsDOM.innerHTML;
-}
-function plusThreeHome() {
-    scoreHome += 3;
-    scoreHomeDOM.textContent = scoreHome;
-    statsDOM.innerHTML = '<br><b>Home:</b> +3' + statsDOM.innerHTML;
-}
+// function plusTwoHome() {
+//     scoreHome += 2;
+//     scoreHomeDOM.textContent = scoreHome;
+//     statsDOM.innerHTML = '<br><b>Home:</b> +2' + statsDOM.innerHTML;
+// }
+// function plusThreeHome() {
+//     scoreHome += 3;
+//     scoreHomeDOM.textContent = scoreHome;
+//     statsDOM.innerHTML = '<br><b>Home:</b> +3' + statsDOM.innerHTML;
+// }
 
-function plusOneGuest() {
-    scoreGuest++;
+function plusGuest(a = 0) {
+    scoreGuest += a;
     scoreGuestDOM.textContent = scoreGuest;
-    statsDOM.innerHTML = '<br><b>Guest</b>: +1' + statsDOM.innerHTML;
+    statsDOM.insertAdjacentHTML('afterbegin', `<br><b>Guest</b>: +${a}`);
 }
-function plusTwoGuest() {
-    scoreGuest += 2;
-    scoreGuestDOM.textContent = scoreGuest;
-    statsDOM.innerHTML = '<br><b>Guest:</b> +2' + statsDOM.innerHTML;
-}
-function plusThreeGuest() {
-    scoreGuest += 3;
-    scoreGuestDOM.textContent = scoreGuest;
-    statsDOM.innerHTML = '<br><b>Guest:</b> +3' + statsDOM.innerHTML;
-}
+// function plusTwoGuest() {
+//     scoreGuest += 2;
+//     scoreGuestDOM.textContent = scoreGuest;
+//     statsDOM.innerHTML = '<br><b>Guest:</b> +2' + statsDOM.innerHTML;
+// }
+// function plusThreeGuest() {
+//     scoreGuest += 3;
+//     scoreGuestDOM.textContent = scoreGuest;
+//     statsDOM.innerHTML = '<br><b>Guest:</b> +3' + statsDOM.innerHTML;
+// }
 
 
-buttonHomeDOM1.addEventListener('click', plusOneHome);
-buttonHomeDOM2.addEventListener('click', plusTwoHome);
-buttonHomeDOM3.addEventListener('click', plusThreeHome);
-buttonGuestDOM1.addEventListener('click', plusOneGuest);
-buttonGuestDOM2.addEventListener('click', plusTwoGuest);
-buttonGuestDOM3.addEventListener('click', plusThreeGuest);
+buttonHomeDOM1.addEventListener('click', () => plusHome(1));
+buttonHomeDOM2.addEventListener('click', () => plusHome(2));
+buttonHomeDOM3.addEventListener('click', () => plusHome(3));
+buttonGuestDOM1.addEventListener('click', () => plusGuest(1));
+buttonGuestDOM2.addEventListener('click', () => plusGuest(2));
+buttonGuestDOM3.addEventListener('click', () => plusGuest(3));
 
