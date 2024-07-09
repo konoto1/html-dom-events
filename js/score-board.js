@@ -12,10 +12,8 @@ const buttonGuestDOM3 = buttonDOM[5];
 
 const statsDOM = document.getElementsByClassName('stats')[0];
 
-
 let scoreHome = 0;
 let scoreGuest = 0;
-
 
 function plusHome(a = 0) {
     scoreHome += a;
@@ -48,7 +46,6 @@ function plusGuest(a = 0) {
 //     scoreGuestDOM.textContent = scoreGuest;
 //     statsDOM.innerHTML = '<br><b>Guest:</b> +3' + statsDOM.innerHTML;
 // }
-
 
 buttonHomeDOM1.addEventListener('click', () => plusHome(1));
 buttonHomeDOM2.addEventListener('click', () => plusHome(2));
