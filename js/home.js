@@ -8,19 +8,25 @@ function updateText() {
 buttonDOM.addEventListener('click', updateText);
 
 const introductionDOM = document.getElementsByClassName('introduction')[0];
-const btnDOM1 = introductionDOM.getElementsByTagName('button')[0];
-const btnDOM2 = introductionDOM.getElementsByTagName('button')[1];
-const btnDOM3 = introductionDOM.getElementsByTagName('button')[2];
-const btnDOM4 = introductionDOM.getElementsByTagName('button')[3];
+const btnDOM = introductionDOM.getElementsByTagName('button');
 const paragraphDOM = document.getElementById('paragraph');
-
-
 
 function introduction(n = '_____') {
     paragraphDOM.insertAdjacentHTML('afterBegin', `<p>Hello, my name is ${n}</p>`);
 }
 
-btnDOM1.addEventListener('click', () => introduction(btnDOM1.innerText));
-btnDOM2.addEventListener('click', () => introduction(btnDOM2.innerText));
-btnDOM3.addEventListener('click', () => introduction(btnDOM3.innerText));
-btnDOM4.addEventListener('click', () => introduction(btnDOM4.innerText));
+for (const btn of btnDOM) {
+    btn.addEventListener('click', () => introduction(btn.innerText));
+}
+
+// for (let i = 0; i < btnDOM.length; i++) {
+//     btnDOM[i].addEventListener('click', () => introduction(btnDOM[i].innerText));
+// }
+
+// btnDOM[0].addEventListener('click', () => introduction(btnDOM[0].innerText));
+// btnDOM[1].addEventListener('click', () => introduction(btnDOM[1].innerText));
+// btnDOM[2].addEventListener('click', () => introduction(btnDOM[2].innerText));
+// btnDOM[3].addEventListener('click', () => introduction(btnDOM[3].innerText));
+
+
+
