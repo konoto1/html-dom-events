@@ -13,27 +13,38 @@ const buttonGuestDOM3 = buttonDOM[5];
 const statsDOM = document.getElementsByClassName('stats')[0];
 
 const localData = localStorage.getItem('history');
-
 let scores = [];
 let scoreHome = 0;
 let scoreGuest = 0;
 
+function start() {
+    if (localData !== null) {
+        scores = JSON.parse(localData);
+        for (const list of scores) {
+            if (Object.keys(list)[0] === 'home') {
+                statsDOM.insertAdjacentHTML('afterbegin', list.home)
+                scoreHomeDOM.textContent = list.scrHome;
+                scoreHome = list.scrHome;
+            } else {
+                statsDOM.insertAdjacentHTML('afterbegin', list.guest)
+                scoreGuestDOM.textContent = list.scrGuest;
+                scoreGuest = list.scrGuest;
+            }
+        }
+        const statsBtnDOM = statsDOM.querySelectorAll('button');
 
-if (localData !== null) {
-    scores = JSON.parse(localData);
-    for (const list of scores) {
-        if (Object.keys(list)[0] === 'home') {
-            statsDOM.insertAdjacentHTML('afterbegin', list.home)
-            scoreHomeDOM.textContent = list.scrHome;
-            scoreHome = list.scrHome;
-        } else {
-            statsDOM.insertAdjacentHTML('afterbegin', list.guest)
-            scoreGuestDOM.textContent = list.scrGuest;
-            scoreGuest = list.scrGuest;
+        for (let i = 0; i < statsBtnDOM.length; i++) {
+            statsBtnDOM[i].addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log(`click${i}`);
+            });
         }
     }
-    del();
+    console.log('statsBtnDOM');
+    console.log(localData);
 }
+
+start();
 
 
 buttonHomeDOM1.addEventListener('click', () => plusHome(1));
@@ -45,19 +56,20 @@ buttonGuestDOM3.addEventListener('click', () => plusGuest(3));
 
 
 
-const position = 'afterbegin';
+
 
 function plusHome(a = 0) {
     scoreHome += a;
     scoreHomeDOM.textContent = scoreHome;
-    const homeHTML = `<br>(${formatTime(Date.now())}) <b>Home:</b> +${a} <button type = "button">Delete</button>`
+    const homeHTML = `<br>(${formatTime(Date.now())}) <b>Home:</b> +${a} <button type = "button">Delete</button>`;
     scores.push({
         home: homeHTML,
         scrHome: scoreHome,
     });
     statsDOM.insertAdjacentHTML('afterbegin', homeHTML);
-    del();
+    // del();
     localStorage.setItem('history', JSON.stringify(scores));
+    start();
 }
 // function plusTwoHome() {
 //     scoreHome += 2;
@@ -79,8 +91,9 @@ function plusGuest(a = 0) {
         scrGuest: scoreGuest,
     });
     statsDOM.insertAdjacentHTML('afterbegin', guestHTML);
-    del();
+    // del;
     localStorage.setItem('history', JSON.stringify(scores));
+    start();
 }
 // function plusTwoGuest() {
 //     scoreGuest += 2;
@@ -108,17 +121,19 @@ function formatTime(timeInMs) {
 }
 
 
-function del() {
-    if (statsDOM.innerHTML !== '') {
-        const statsBtnDOM = statsDOM.querySelectorAll('button');
-        for (let i = 0; i < statsBtnDOM.length; i++) {
-            if (statsBtnDOM[i].classList.value !== 'event') {
-                statsBtnDOM[i].classList.add('event');
-                statsBtnDOM[i].addEventListener('click', (e) => {
-                    e.preventDefault();
-                    console.log(`click${i}`);
-                });
-            }
-        }
-    }
-}
+// function del() {
+//     if (statsDOM.innerHTML !== '') {
+//         const statsBtnDOM = statsDOM.querySelectorAll('button');
+//         for (let i = 0; i < statsBtnDOM.length; i++) {
+//             if (statsBtnDOM[i].classList.value !== 'event') {
+//                 statsBtnDOM[i].classList.add('event');
+
+//                 statsBtnDOM[i].addEventListener('click', (e) => {
+//                     e.preventDefault();
+//                     console.log(`click${statsBtnDOM.length}`);
+//                 });
+//             }
+//         }
+//     }
+// }
+
