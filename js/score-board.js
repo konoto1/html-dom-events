@@ -2,23 +2,62 @@ const scoresDOM = document.getElementsByClassName('score');
 const scoreHomeDOM = (scoresDOM[0].getElementsByTagName('div'))[1];
 const scoreGuestDOM = (scoresDOM[0].getElementsByTagName('div'))[3];
 
-const buttonDOM = document.getElementsByTagName('button');
+
+const buttonDOM = document.querySelectorAll('.btn button');
 const buttonHomeDOM1 = buttonDOM[0];
 const buttonHomeDOM2 = buttonDOM[1];
 const buttonHomeDOM3 = buttonDOM[2];
 const buttonGuestDOM1 = buttonDOM[3];
 const buttonGuestDOM2 = buttonDOM[4];
 const buttonGuestDOM3 = buttonDOM[5];
-
 const statsDOM = document.getElementsByClassName('stats')[0];
 
+const localData = localStorage.getItem('history');
+
+let scores = [];
 let scoreHome = 0;
 let scoreGuest = 0;
+
+
+if (localData !== null) {
+    scores = JSON.parse(localData);
+    for (const list of scores) {
+        if (Object.keys(list)[0] === 'home') {
+            statsDOM.insertAdjacentHTML('afterbegin', list.home)
+            scoreHomeDOM.textContent = list.scrHome;
+            scoreHome = list.scrHome;
+        } else {
+            statsDOM.insertAdjacentHTML('afterbegin', list.guest)
+            scoreGuestDOM.textContent = list.scrGuest;
+            scoreGuest = list.scrGuest;
+        }
+    }
+    del();
+}
+
+
+buttonHomeDOM1.addEventListener('click', () => plusHome(1));
+buttonHomeDOM2.addEventListener('click', () => plusHome(2));
+buttonHomeDOM3.addEventListener('click', () => plusHome(3));
+buttonGuestDOM1.addEventListener('click', () => plusGuest(1));
+buttonGuestDOM2.addEventListener('click', () => plusGuest(2));
+buttonGuestDOM3.addEventListener('click', () => plusGuest(3));
+
+
+
+const position = 'afterbegin';
 
 function plusHome(a = 0) {
     scoreHome += a;
     scoreHomeDOM.textContent = scoreHome;
-    statsDOM.insertAdjacentHTML('afterbegin', `<br><b>Home:</b> +${a}`);
+    const homeHTML = `<br>(${formatTime(Date.now())}) <b>Home:</b> +${a} <button type = "button">Delete</button>`
+    scores.push({
+        home: homeHTML,
+        scrHome: scoreHome,
+    });
+    statsDOM.insertAdjacentHTML('afterbegin', homeHTML);
+    del();
+    localStorage.setItem('history', JSON.stringify(scores));
 }
 // function plusTwoHome() {
 //     scoreHome += 2;
@@ -34,7 +73,14 @@ function plusHome(a = 0) {
 function plusGuest(a = 0) {
     scoreGuest += a;
     scoreGuestDOM.textContent = scoreGuest;
-    statsDOM.insertAdjacentHTML('afterbegin', `<br><b>Guest</b>: +${a}`);
+    const guestHTML = `<br>(${formatTime(Date.now())}) <b>Guest:</b> +${a} <button type = "button">Delete</button>`;
+    scores.push({
+        guest: guestHTML,
+        scrGuest: scoreGuest,
+    });
+    statsDOM.insertAdjacentHTML('afterbegin', guestHTML);
+    del();
+    localStorage.setItem('history', JSON.stringify(scores));
 }
 // function plusTwoGuest() {
 //     scoreGuest += 2;
@@ -47,10 +93,32 @@ function plusGuest(a = 0) {
 //     statsDOM.innerHTML = '<br><b>Guest:</b> +3' + statsDOM.innerHTML;
 // }
 
-buttonHomeDOM1.addEventListener('click', () => plusHome(1));
-buttonHomeDOM2.addEventListener('click', () => plusHome(2));
-buttonHomeDOM3.addEventListener('click', () => plusHome(3));
-buttonGuestDOM1.addEventListener('click', () => plusGuest(1));
-buttonGuestDOM2.addEventListener('click', () => plusGuest(2));
-buttonGuestDOM3.addEventListener('click', () => plusGuest(3));
 
+
+function formatTime(timeInMs) {
+    const date = new Date(timeInMs);
+    const y = (date.getFullYear());
+    const m = (date.getMonth() + 1 < 10 ? '0' : '') + (date.getMonth() + 1);
+    // const d = (date.getDay()); //savaites diena
+    const d = (date.getDate() < 10 ? '0' : '') + date.getDate(); // menesio diena
+    const h = (date.getHours() < 10 ? '0' : '') + date.getHours();
+    const mn = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+    const s = (date.getSeconds() < 10 ? '0' : '') + date.getSeconds();
+    return `${y}-${m}-${d} ${h}:${mn}:${s}`;
+}
+
+
+function del() {
+    if (statsDOM.innerHTML !== '') {
+        const statsBtnDOM = statsDOM.querySelectorAll('button');
+        for (let i = 0; i < statsBtnDOM.length; i++) {
+            if (statsBtnDOM[i].classList.value !== 'event') {
+                statsBtnDOM[i].classList.add('event');
+                statsBtnDOM[i].addEventListener('click', (e) => {
+                    e.preventDefault();
+                    console.log(`click${i}`);
+                });
+            }
+        }
+    }
+}
