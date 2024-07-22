@@ -2,7 +2,6 @@ const scoresDOM = document.getElementsByClassName('score');
 const scoreHomeDOM = (scoresDOM[0].getElementsByTagName('div'))[1];
 const scoreGuestDOM = (scoresDOM[0].getElementsByTagName('div'))[3];
 
-
 const buttonDOM = document.querySelectorAll('.btn button');
 const buttonHomeDOM1 = buttonDOM[0];
 const buttonHomeDOM2 = buttonDOM[1];
@@ -12,40 +11,52 @@ const buttonGuestDOM2 = buttonDOM[4];
 const buttonGuestDOM3 = buttonDOM[5];
 const statsDOM = document.getElementsByClassName('stats')[0];
 
-const localData = localStorage.getItem('history');
+let localData = localStorage.getItem('history');
 let scores = [];
 let scoreHome = 0;
 let scoreGuest = 0;
 
 function start() {
-    if (localData !== null) {
+    localData = localStorage.getItem('history');
+    if (!scores.includes('home')) {
+        scoreHomeDOM.textContent = 0;
+        scoreHome = 0;
+    }
+    if (!scores.includes('guest')) {
+        scoreGuestDOM.textContent = 0;
+        scoreGuest = 0;
+    }
+    if (!scores.includes('home') && !scores.includes('guest')) {
+        statsDOM.innerHTML = '';
+    }
+    if (localData !== null && localData !== '[]') {
         scores = JSON.parse(localData);
+        statsDOM.innerHTML = '';
         for (const list of scores) {
             if (Object.keys(list)[0] === 'home') {
                 statsDOM.insertAdjacentHTML('afterbegin', list.home)
-                scoreHomeDOM.textContent = list.scrHome;
-                scoreHome = list.scrHome;
-            } else {
+                scoreHome += list.scrHome;
+                scoreHomeDOM.textContent = scoreHome;
+            }
+            if (Object.keys(list)[0] === 'guest') {
                 statsDOM.insertAdjacentHTML('afterbegin', list.guest)
-                scoreGuestDOM.textContent = list.scrGuest;
-                scoreGuest = list.scrGuest;
+                scoreGuest += list.scrGuest;
+                scoreGuestDOM.textContent = scoreGuest;
             }
         }
         const statsBtnDOM = statsDOM.querySelectorAll('button');
-
         for (let i = 0; i < statsBtnDOM.length; i++) {
-            statsBtnDOM[i].addEventListener('click', (e) => {
+            statsBtnDOM[statsBtnDOM.length - 1 - i].addEventListener('click', (e) => {
                 e.preventDefault();
-                console.log(`click${i}`);
+                scores.splice(i, 1);
+                localStorage.setItem('history', JSON.stringify(scores));
+                start();
             });
         }
     }
-    console.log('statsBtnDOM');
-    console.log(localData);
 }
 
 start();
-
 
 buttonHomeDOM1.addEventListener('click', () => plusHome(1));
 buttonHomeDOM2.addEventListener('click', () => plusHome(2));
@@ -54,23 +65,21 @@ buttonGuestDOM1.addEventListener('click', () => plusGuest(1));
 buttonGuestDOM2.addEventListener('click', () => plusGuest(2));
 buttonGuestDOM3.addEventListener('click', () => plusGuest(3));
 
-
-
-
-
 function plusHome(a = 0) {
-    scoreHome += a;
+    scoreHome = a;
     scoreHomeDOM.textContent = scoreHome;
     const homeHTML = `<br>(${formatTime(Date.now())}) <b>Home:</b> +${a} <button type = "button">Delete</button>`;
     scores.push({
         home: homeHTML,
         scrHome: scoreHome,
     });
-    statsDOM.insertAdjacentHTML('afterbegin', homeHTML);
+
+    // statsDOM.insertAdjacentHTML('afterbegin', homeHTML);
     // del();
     localStorage.setItem('history', JSON.stringify(scores));
+    // localData = localStorage.getItem('history');
     start();
-}
+};
 // function plusTwoHome() {
 //     scoreHome += 2;
 //     scoreHomeDOM.textContent = scoreHome;
@@ -83,18 +92,19 @@ function plusHome(a = 0) {
 // }
 
 function plusGuest(a = 0) {
-    scoreGuest += a;
+    scoreGuest = a;
     scoreGuestDOM.textContent = scoreGuest;
     const guestHTML = `<br>(${formatTime(Date.now())}) <b>Guest:</b> +${a} <button type = "button">Delete</button>`;
     scores.push({
         guest: guestHTML,
         scrGuest: scoreGuest,
     });
-    statsDOM.insertAdjacentHTML('afterbegin', guestHTML);
+    // statsDOM.insertAdjacentHTML('afterbegin', guestHTML);
     // del;
     localStorage.setItem('history', JSON.stringify(scores));
+    // localData = localStorage.getItem('history');
     start();
-}
+};
 // function plusTwoGuest() {
 //     scoreGuest += 2;
 //     scoreGuestDOM.textContent = scoreGuest;
@@ -105,8 +115,6 @@ function plusGuest(a = 0) {
 //     scoreGuestDOM.textContent = scoreGuest;
 //     statsDOM.innerHTML = '<br><b>Guest:</b> +3' + statsDOM.innerHTML;
 // }
-
-
 
 function formatTime(timeInMs) {
     const date = new Date(timeInMs);
@@ -119,7 +127,6 @@ function formatTime(timeInMs) {
     const s = (date.getSeconds() < 10 ? '0' : '') + date.getSeconds();
     return `${y}-${m}-${d} ${h}:${mn}:${s}`;
 }
-
 
 // function del() {
 //     if (statsDOM.innerHTML !== '') {
