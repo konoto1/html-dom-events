@@ -20,7 +20,6 @@ Design: --
 ## 🎯 Project features/goals
 
 -   Github pages
--   forms
 -   JS events
 -   JS rendering (DOM)
 
